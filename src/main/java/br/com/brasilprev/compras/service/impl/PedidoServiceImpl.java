@@ -1,5 +1,6 @@
 package br.com.brasilprev.compras.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -7,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.brasilprev.compras.dto.PedidoDto;
+import br.com.brasilprev.compras.dto.PedidoItemDto;
 import br.com.brasilprev.compras.entity.Pedido;
+import br.com.brasilprev.compras.entity.PedidoItem;
 import br.com.brasilprev.compras.repository.PedidoRepository;
 import br.com.brasilprev.compras.service.PedidoService;
 
@@ -21,8 +24,14 @@ public class PedidoServiceImpl implements PedidoService {
 	private ModelMapper modelMapper;
 
 	
-	public List<Pedido> getPedidos() {
-		return pedidoRepository.findAll();
+	public List<PedidoDto> getPedidos() {
+		List<Pedido> pedidoItems = pedidoRepository.findAll();
+		ArrayList<PedidoDto> pedidoDtos = new ArrayList<>();
+		for(Pedido pedido : pedidoItems) {
+			pedidoDtos.add(modelMapper.map(pedido, PedidoDto.class));
+		}
+		return pedidoDtos;
+
 	}
 
 	@Override

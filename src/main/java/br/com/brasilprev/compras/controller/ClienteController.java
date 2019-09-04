@@ -23,9 +23,9 @@ public class ClienteController {
 	private ClienteService clienteService;
 
 	@RequestMapping(method= RequestMethod.GET)
-	public ResponseEntity<List<Cliente>> getClientes() {
-		List<Cliente> clientes = clienteService.getClientes();
-		return new ResponseEntity<List<Cliente>>(clientes, HttpStatus.OK); 
+	public ResponseEntity<List<ClienteDto>> getClientes() {
+		List<ClienteDto> clientes = clienteService.getClientes();
+		return new ResponseEntity<List<ClienteDto>>(clientes, HttpStatus.OK); 
 	}
 	
 	@RequestMapping(value = "/{id}", method= RequestMethod.GET)

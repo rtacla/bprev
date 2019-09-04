@@ -14,6 +14,10 @@ public class PedidoDto {
 	private String sessao;
 	
 	public PedidoDto() {}
+	
+	public PedidoDto(Long idPedido) {
+		this.idPedido = idPedido;
+	}
 
 	public Long getIdPedido() {
 		return idPedido;

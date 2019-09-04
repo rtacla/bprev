@@ -1,5 +1,6 @@
 package br.com.brasilprev.compras.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +22,14 @@ public class CategoriaServiceImpl implements CategoriaService {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	public List<Categoria> getCategorias() {
-		return categoriaRepository.findAll();
+	public List<CategoriaDto> getCategorias() {
+		List<Categoria> categorias = categoriaRepository.findAll();
+		ArrayList<CategoriaDto> categoriaDtos = new ArrayList<>();
+		for(Categoria categoria : categorias) {
+			categoriaDtos.add(modelMapper.map(categoria, CategoriaDto.class));
+		}
+		return categoriaDtos;
+		
 	}
 
 	@Override
@@ -47,8 +54,10 @@ public class CategoriaServiceImpl implements CategoriaService {
 	}
 
 	@Override
-	public CategoriaDto insert(CategoriaDto categoria) {
-		return modelMapper.map(categoriaRepository.save(modelMapper.map(categoria, Categoria.class)), CategoriaDto.class);
+	public CategoriaDto insert(CategoriaDto categoriaDto) {
+		Categoria categoria = modelMapper.map(categoriaDto, Categoria.class);
+		categoria = categoriaRepository.save(categoria);
+		return modelMapper.map(categoria, CategoriaDto.class);
 		
 	}
 

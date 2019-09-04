@@ -33,6 +33,13 @@ public class Produto {
 	private String descricao;
 	
 	private String foto;
+	
+	public Produto() {}
+	
+	public Produto (Long idProduto, String produto) {
+		this.idProduto = idProduto;
+		this.produto = produto;
+	}
 
 	public Long getIdProduto() {
 		return idProduto;

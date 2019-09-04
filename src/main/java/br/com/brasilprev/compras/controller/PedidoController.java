@@ -23,9 +23,9 @@ public class PedidoController {
 	private PedidoService pedidoService;
 
 	@RequestMapping(method= RequestMethod.GET)
-	public ResponseEntity<List<Pedido>> getPedidos() {
-		List<Pedido> pedidos = pedidoService.getPedidos();
-		return new ResponseEntity<List<Pedido>>(pedidos, HttpStatus.OK); 
+	public ResponseEntity<List<PedidoDto>> getPedidos() {
+		List<PedidoDto> pedidos = pedidoService.getPedidos();
+		return new ResponseEntity<List<PedidoDto>>(pedidos, HttpStatus.OK); 
 	}
 	
 	@RequestMapping(value = "/{id}", method= RequestMethod.GET)

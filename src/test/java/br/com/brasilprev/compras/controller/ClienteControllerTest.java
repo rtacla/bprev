@@ -40,11 +40,44 @@ public class ClienteControllerTest {
 		
 		mockMvc.perform( MockMvcRequestBuilders
 			      .get("/api/clientes/{id}", 1L)
+			      .header("Authorization", "Basic dXNlcjoxMjM0NTY=")
 			      .accept(MediaType.APPLICATION_JSON))
 			      .andDo(print())
 			      .andExpect(status().isOk())
 			      .andExpect(MockMvcResultMatchers.jsonPath("$.idCliente").value(1L));
 	}
+	
+	@Test
+	public void testController2() throws Exception {
+		
+		when(clienteService.findById(Mockito.anyLong())).thenReturn(getClienteDto());
+		
+		mockMvc.perform( MockMvcRequestBuilders
+			      .delete("/api/clientes/{id}", 1L)
+			      .header("Authorization", "Basic dXNlcjoxMjM0NTY=")
+			      .accept(MediaType.APPLICATION_JSON))
+			      .andDo(print())
+			      .andExpect(status().isOk());
+	}
+	
+	
+	@Test
+	public void testController3() throws Exception {
+		
+		when(clienteService.insert(Mockito.any())).thenReturn(getClienteDto());
+		
+		mockMvc.perform( MockMvcRequestBuilders
+			      .post("/api/clientes/")
+			      .contentType(MediaType.APPLICATION_JSON)
+		          .content(" {\"idCliente\": 1,\"nome\": \"XXX\"}") 			      
+			      .header("Authorization", "Basic dXNlcjoxMjM0NTY=")
+			      .accept(MediaType.APPLICATION_JSON))
+			      .andDo(print())
+			      .andExpect(status().isOk())
+			      .andExpect(MockMvcResultMatchers.jsonPath("$.idCliente").value(1L));
+	}	
+	
+	
 	
 	public ClienteDto getClienteDto() {
 		return new ClienteDto(1L, "TESTE");

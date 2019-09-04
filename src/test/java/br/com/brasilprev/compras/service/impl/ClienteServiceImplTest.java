@@ -1,5 +1,7 @@
 package br.com.brasilprev.compras.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Assert;
@@ -13,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 
+import br.com.brasilprev.compras.dto.CategoriaDto;
 import br.com.brasilprev.compras.dto.ClienteDto;
 import br.com.brasilprev.compras.entity.Cliente;
 import br.com.brasilprev.compras.repository.ClienteRepository;
@@ -21,10 +24,10 @@ import br.com.brasilprev.compras.repository.ClienteRepository;
 public class ClienteServiceImplTest {
 
 	@InjectMocks
-	private ClienteServiceImpl ClienteServiceImpl;
+	private ClienteServiceImpl clienteServiceImpl;
 
 	@Mock
-	private ClienteRepository ClienteRepository;
+	private ClienteRepository clienteRepository;
 	
 	@Mock
 	private ModelMapper modelMapper;
@@ -37,11 +40,37 @@ public class ClienteServiceImplTest {
 	@Test
 	public void testFindById() {
 
-		Mockito.when(ClienteRepository.findById(Mockito.anyLong())).thenReturn(mockCliente());
+		Mockito.when(clienteRepository.findById(Mockito.anyLong())).thenReturn(mockCliente());
 		Mockito.when(modelMapper.map(Mockito.any(),  Mockito.any())).thenReturn(mockClienteDto());
-		ClienteDto Cliente = ClienteServiceImpl.findById(1L);
+		ClienteDto Cliente = clienteServiceImpl.findById(1L);
 		Assert.assertEquals(Cliente.getIdCliente().longValue(), 1L);
 	}
+	
+	
+	@Test
+	public void testDelete() {
+		Mockito.doNothing().when(clienteRepository).deleteById(Mockito.anyLong());
+		clienteServiceImpl.delete(1L);
+	}
+	
+	@Test
+	public void testList() {
+		Mockito.when(clienteRepository.findAll()).thenReturn(mockListClientes());
+		Mockito.when(modelMapper.map(Mockito.any(),  Mockito.any())).thenReturn(mockClienteDto());
+		List<ClienteDto> clienteDtos = clienteServiceImpl.getClientes();
+		Assert.assertEquals(clienteDtos.get(0).getIdCliente().longValue(), 1L);
+	}
+	
+	
+	private List<Cliente> mockListClientes() {
+		ArrayList<Cliente> clientes = new ArrayList<>();
+		clientes.add(new Cliente(1L));
+		clientes.add(new Cliente(2L));
+		return clientes;
+	}
+
+
+
 
 	private ClienteDto mockClienteDto() {
 		ClienteDto cliente = new ClienteDto(1L, "JOSE");

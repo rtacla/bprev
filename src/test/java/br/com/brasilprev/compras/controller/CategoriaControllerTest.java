@@ -41,11 +41,43 @@ public class CategoriaControllerTest {
 		
 		mockMvc.perform( MockMvcRequestBuilders
 			      .get("/api/categorias/{id}", 1L)
+			      .header("Authorization", "Basic dXNlcjoxMjM0NTY=")
 			      .accept(MediaType.APPLICATION_JSON))
 			      .andDo(print())
 			      .andExpect(status().isOk())
 			      .andExpect(MockMvcResultMatchers.jsonPath("$.idCategoria").value(1L));
 	}
+	
+	@Test
+	public void testController2() throws Exception {
+		
+		when(categoriaService.findById(Mockito.anyLong())).thenReturn(getCategoriaDto());
+		
+		mockMvc.perform( MockMvcRequestBuilders
+			      .delete("/api/categorias/{id}", 1L)
+			      .header("Authorization", "Basic dXNlcjoxMjM0NTY=")
+			      .accept(MediaType.APPLICATION_JSON))
+			      .andDo(print())
+			      .andExpect(status().isOk());
+			      
+	}
+	
+	@Test
+	public void testController3() throws Exception {
+		
+		when(categoriaService.insert(Mockito.any())).thenReturn(getCategoriaDto());
+		
+		mockMvc.perform( MockMvcRequestBuilders
+			      .post("/api/categorias/")
+			      .contentType(MediaType.APPLICATION_JSON)
+		          .content(" {\"idCategoria\": 1,\"categoria\": \"Brinquedos\"}") 			      
+			      .header("Authorization", "Basic dXNlcjoxMjM0NTY=")
+			      .accept(MediaType.APPLICATION_JSON))
+			      .andDo(print())
+			      .andExpect(status().isOk())
+			      .andExpect(MockMvcResultMatchers.jsonPath("$.idCategoria").value(1L));
+	}
+	
 	
 	public CategoriaDto getCategoriaDto() {
 		return new CategoriaDto(1L, "TESTE");

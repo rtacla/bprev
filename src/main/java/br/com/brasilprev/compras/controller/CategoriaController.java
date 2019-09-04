@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.brasilprev.compras.dto.CategoriaDto;
-import br.com.brasilprev.compras.entity.Categoria;
 import br.com.brasilprev.compras.service.CategoriaService;
 
 @RestController
@@ -23,9 +22,9 @@ public class CategoriaController {
 	private CategoriaService categoriaService;
 
 	@RequestMapping(method= RequestMethod.GET)
-	public ResponseEntity<List<Categoria>> getCategorias() {
-		List<Categoria> categorias = categoriaService.getCategorias();
-		return new ResponseEntity<List<Categoria>>(categorias, HttpStatus.OK); 
+	public ResponseEntity<List<CategoriaDto>> getCategorias() {
+		List<CategoriaDto> categorias = categoriaService.getCategorias();
+		return new ResponseEntity<List<CategoriaDto>>(categorias, HttpStatus.OK); 
 	}
 	
 	@RequestMapping(value = "/{id}", method= RequestMethod.GET)

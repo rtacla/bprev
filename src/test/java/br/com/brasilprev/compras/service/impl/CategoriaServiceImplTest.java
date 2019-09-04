@@ -1,5 +1,7 @@
 package br.com.brasilprev.compras.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Assert;
@@ -27,7 +29,7 @@ public class CategoriaServiceImplTest {
 	private CategoriaRepository categoriaRepository;
 	
 	@Mock
-	ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 
 	@Before
 	public void setUp() throws Exception {
@@ -42,13 +44,27 @@ public class CategoriaServiceImplTest {
 		Assert.assertEquals(categoria.getIdCategoria().longValue(), 1L);
 	}
 	
+	
 	@Test
-	public void testUpdate() {
-		Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(mockCategoriaSingle());
-		Mockito.when(categoriaRepository.save(Mockito.any())).thenReturn(mockCategoria());
+	public void testDelete() {
+		Mockito.doNothing().when(categoriaRepository).deleteById(Mockito.anyLong());
+		categoriaServiceImpl.delete(1L);
+	}
+	
+	@Test
+	public void testList() {
+		Mockito.when(categoriaRepository.findAll()).thenReturn(mockListCategoria());
 		Mockito.when(modelMapper.map(Mockito.any(),  Mockito.any())).thenReturn(mockCategoriaDto());
-		CategoriaDto categoria = categoriaServiceImpl.update(mockCategoriaDto());
-		Assert.assertEquals(categoria.getIdCategoria().longValue(), mockCategoriaDto().getIdCategoria().longValue());
+		List<CategoriaDto> categoriaDtos = categoriaServiceImpl.getCategorias();
+		Assert.assertEquals(categoriaDtos.get(0).getIdCategoria().longValue(), 1L);
+	}
+	
+	
+	private List<Categoria> mockListCategoria() {
+		ArrayList<Categoria> categorias = new ArrayList<>();
+		categorias.add(new Categoria(1L, "TESTE"));
+		categorias.add(new Categoria(2L, "TESTE"));
+		return categorias;
 	}
 
 

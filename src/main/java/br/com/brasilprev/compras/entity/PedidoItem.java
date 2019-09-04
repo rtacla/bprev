@@ -35,6 +35,12 @@ public class PedidoItem {
 	private BigDecimal valor;
 	
 	private BigDecimal subTotal;
+	
+	public PedidoItem() {}
+	
+	public PedidoItem(Long idItem) {
+		this.idItem = idItem;
+	}
 
 	public Long getIdItem() {
 		return idItem;

@@ -30,6 +30,12 @@ public class Pedido {
 	private String status;
 	
 	private String sessao;
+	
+	public Pedido() {}
+	
+	public Pedido(Long idPedido) {
+		this.idPedido = idPedido;
+	}
 
 	public Long getIdPedido() {
 		return idPedido;

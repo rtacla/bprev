@@ -1,5 +1,6 @@
 package br.com.brasilprev.compras.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -21,8 +22,13 @@ public class ClienteServiceImpl implements ClienteService {
 	private ModelMapper modelMapper;
 
 	
-	public List<Cliente> getClientes() {
-		return clienteRepository.findAll();
+	public List<ClienteDto> getClientes() {
+		List<Cliente> clientes = clienteRepository.findAll();
+		ArrayList<ClienteDto> clienteDtos = new ArrayList<>();
+		for(Cliente cliente : clientes) {
+			clienteDtos.add(modelMapper.map(cliente, ClienteDto.class));
+		}
+		return clienteDtos;
 	}
 
 

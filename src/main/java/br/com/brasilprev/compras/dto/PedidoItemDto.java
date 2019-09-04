@@ -18,6 +18,10 @@ public class PedidoItemDto {
 	private BigDecimal subTotal;
 	
 	public PedidoItemDto() {}
+	
+	public PedidoItemDto(Long idItem) {
+		this.idItem = idItem;
+	}
 
 	public Long getIdItem() {
 		return idItem;

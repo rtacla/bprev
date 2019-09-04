@@ -1,6 +1,8 @@
 package br.com.brasilprev.compras.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Assert;
@@ -16,18 +18,20 @@ import org.modelmapper.ModelMapper;
 
 import br.com.brasilprev.compras.dto.ClienteDto;
 import br.com.brasilprev.compras.dto.PedidoDto;
+import br.com.brasilprev.compras.dto.PedidoItemDto;
 import br.com.brasilprev.compras.entity.Cliente;
 import br.com.brasilprev.compras.entity.Pedido;
+import br.com.brasilprev.compras.entity.PedidoItem;
 import br.com.brasilprev.compras.repository.PedidoRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PedidoServiceImplTest {
 
 	@InjectMocks
-	private PedidoServiceImpl PedidoServiceImpl;
+	private PedidoServiceImpl pedidoServiceImpl;
 
 	@Mock
-	private PedidoRepository PedidoRepository;
+	private PedidoRepository pedidoRepository;
 	
 	@Mock
 	private ModelMapper modelMapper;
@@ -40,11 +44,35 @@ public class PedidoServiceImplTest {
 	@Test
 	public void testFindById() {
 
-		Mockito.when(PedidoRepository.findById(Mockito.anyLong())).thenReturn(mockPedido());
+		Mockito.when(pedidoRepository.findById(Mockito.anyLong())).thenReturn(mockPedido());
 		Mockito.when(modelMapper.map(Mockito.any(),  Mockito.any())).thenReturn(mockPedidoDto());
-		PedidoDto Pedido = PedidoServiceImpl.findById(1L);
+		PedidoDto Pedido = pedidoServiceImpl.findById(1L);
 		Assert.assertEquals(Pedido.getIdPedido().longValue(), 1L);
 	}
+	
+	@Test
+	public void testDelete() {
+		Mockito.doNothing().when(pedidoRepository).deleteById(Mockito.anyLong());
+		pedidoServiceImpl.delete(1L);
+	}
+	
+	@Test
+	public void testList() {
+		Mockito.when(pedidoRepository.findAll()).thenReturn(mockListPedidoItens());
+		Mockito.when(modelMapper.map(Mockito.any(),  Mockito.any())).thenReturn(mockPedidoDto());
+		List<PedidoDto> pedidoDtos = pedidoServiceImpl.getPedidos();
+		Assert.assertEquals(pedidoDtos.get(0).getIdPedido().longValue(), 1L);
+	}
+	
+	
+	private List<Pedido> mockListPedidoItens() {
+		ArrayList<Pedido> pedidos = new ArrayList<>();
+		pedidos.add(new Pedido(1L));
+		pedidos.add(new Pedido(2L));
+		return pedidos;
+	}
+	
+
 
 	private PedidoDto mockPedidoDto() {
 		PedidoDto pedido = new PedidoDto();

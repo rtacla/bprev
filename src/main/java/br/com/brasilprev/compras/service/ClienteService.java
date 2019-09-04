@@ -6,7 +6,7 @@ import br.com.brasilprev.compras.dto.ClienteDto;
 import br.com.brasilprev.compras.entity.Cliente;
 
 public interface ClienteService {
-	public List<Cliente> getClientes();
+	public List<ClienteDto> getClientes();
 	public ClienteDto findById(Long id);
 	public void update(ClienteDto cliente);
 	public void delete(Long id);

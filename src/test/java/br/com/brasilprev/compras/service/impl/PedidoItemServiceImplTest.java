@@ -1,6 +1,8 @@
 package br.com.brasilprev.compras.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Assert;
@@ -14,9 +16,11 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 
+import br.com.brasilprev.compras.dto.ClienteDto;
 import br.com.brasilprev.compras.dto.PedidoDto;
 import br.com.brasilprev.compras.dto.PedidoItemDto;
 import br.com.brasilprev.compras.dto.ProdutoDto;
+import br.com.brasilprev.compras.entity.Cliente;
 import br.com.brasilprev.compras.entity.Pedido;
 import br.com.brasilprev.compras.entity.PedidoItem;
 import br.com.brasilprev.compras.entity.Produto;
@@ -26,10 +30,10 @@ import br.com.brasilprev.compras.repository.PedidoItemRepository;
 public class PedidoItemServiceImplTest {
 
 	@InjectMocks
-	private PedidoItemServiceImpl PedidoItemServiceImpl;
+	private PedidoItemServiceImpl pedidoItemServiceImpl;
 
 	@Mock
-	private PedidoItemRepository PedidoItemRepository;
+	private PedidoItemRepository pedidoItemRepository;
 	
 	@Mock
 	private ModelMapper modelMapper;
@@ -42,11 +46,35 @@ public class PedidoItemServiceImplTest {
 	@Test
 	public void testFindById() {
 
-		Mockito.when(PedidoItemRepository.findById(Mockito.anyLong())).thenReturn(mockPedidoItem());
+		Mockito.when(pedidoItemRepository.findById(Mockito.anyLong())).thenReturn(mockPedidoItem());
 		Mockito.when(modelMapper.map(Mockito.any(),  Mockito.any())).thenReturn(mockPedidoItemDto());
-		PedidoItemDto PedidoItem = PedidoItemServiceImpl.findById(1L);
+		PedidoItemDto PedidoItem = pedidoItemServiceImpl.findById(1L);
 		Assert.assertEquals(PedidoItem.getIdItem().longValue(), 1L);
 	}
+	
+	
+	@Test
+	public void testDelete() {
+		Mockito.doNothing().when(pedidoItemRepository).deleteById(Mockito.anyLong());
+		pedidoItemServiceImpl.delete(1L);
+	}
+	
+	@Test
+	public void testList() {
+		Mockito.when(pedidoItemRepository.findAll()).thenReturn(mockListPedidoItens());
+		Mockito.when(modelMapper.map(Mockito.any(),  Mockito.any())).thenReturn(mockPedidoItemDto());
+		List<PedidoItemDto> pedidoItemDtos = pedidoItemServiceImpl.getPedidoItens();
+		Assert.assertEquals(pedidoItemDtos.get(0).getIdItem().longValue(), 1L);
+	}
+	
+	
+	private List<PedidoItem> mockListPedidoItens() {
+		ArrayList<PedidoItem> pedidoItems = new ArrayList<>();
+		pedidoItems.add(new PedidoItem(1L));
+		pedidoItems.add(new PedidoItem(2L));
+		return pedidoItems;
+	}
+
 
 	private PedidoItemDto mockPedidoItemDto() {
 		PedidoItemDto pedidoItem = new PedidoItemDto();

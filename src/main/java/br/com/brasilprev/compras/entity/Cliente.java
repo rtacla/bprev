@@ -32,6 +32,12 @@ public class Cliente {
 	private String cep;
 	
 	private String estado;
+	
+	public Cliente() {}
+	
+	public Cliente(Long idCliente) {
+		this.idCliente = idCliente;
+	}
 
 	public Long getIdCliente() {
 		return idCliente;

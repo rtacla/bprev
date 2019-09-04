@@ -6,7 +6,7 @@ import br.com.brasilprev.compras.dto.PedidoDto;
 import br.com.brasilprev.compras.entity.Pedido;
 
 public interface PedidoService {
-	public List<Pedido> getPedidos();
+	public List<PedidoDto> getPedidos();
 	public PedidoDto findById(Long id);
 	public void update(PedidoDto cliente);
 	public void delete(Long id);
